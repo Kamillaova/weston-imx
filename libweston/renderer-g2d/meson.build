@@ -2,7 +2,7 @@ if not get_option('renderer-g2d')
 	subdir_done()
 endif
 
-config_h.set('ENABLE_EGL', '1')
+#config_h.set('ENABLE_EGL', '1')
 config_h.set('ENABLE_IMXG2D', '1')
 
 srcs_renderer_g2d = [
