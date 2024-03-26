@@ -9121,32 +9121,13 @@ weston_compositor_init_renderer(struct weston_compositor *compositor,
 				enum weston_renderer_type renderer_type,
 				const struct weston_renderer_options *options)
 {
-	const struct g2d_renderer_interface *g2d_renderer;
-	const struct g2d_renderer_display_options *g2d_options;
-
 	const struct gl_renderer_interface *gl_renderer;
 	const struct gl_renderer_display_options *gl_options;
 	int ret;
 
 	switch (renderer_type) {
-	case WESTON_RENDERER_G2D:
-		g2d_renderer = weston_load_module("g2d-renderer.so",
-						 "g2d_renderer_interface",
-						 LIBWESTON_MODULEDIR);
-		if (!g2d_renderer)
-			return -1;
-
-		g2d_options = container_of(options,
-					  struct g2d_renderer_display_options,
-					  base);
-		ret = g2d_renderer->display_create(compositor, g2d_options);
-		if (ret < 0)
-			return ret;
-
-		compositor->renderer->gl = g2d_renderer;
-		weston_log("Using G2D renderer\n");
-		break;
 	case WESTON_RENDERER_GL:
+	case WESTON_RENDERER_G2D:
 		gl_renderer = weston_load_module("gl-renderer.so",
 						 "gl_renderer_interface",
 						 LIBWESTON_MODULEDIR);
