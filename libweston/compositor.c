@@ -84,6 +84,7 @@
 #include "output-capture.h"
 #include "pixman-renderer.h"
 #include "renderer-gl/gl-renderer.h"
+#include "renderer-g2d/g2d-renderer.h"
 
 #include "weston-log-internal.h"
 
