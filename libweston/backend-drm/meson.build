@@ -59,6 +59,7 @@ deps_drm = [
 	dep_backlight
 ]
 
+if get_option('renderer-gl')
 	dep_gbm = dependency('gbm', required: false, version: '>= 21.1.1')
 	if not dep_gbm.found()
 		error('drm-backend with GL renderer requires gbm which was not found. Or, you can use \'-Drenderer-gl=false\'.')
@@ -72,6 +73,7 @@ deps_drm = [
 	deps_drm += dep_gbm
 	srcs_drm += 'drm-gbm.c'
 	config_h.set('BUILD_DRM_GBM', '1')
+endif
 
 if get_option('backend-drm-screencast-vaapi')
 	foreach name : [ 'libva', 'libva-drm' ]
