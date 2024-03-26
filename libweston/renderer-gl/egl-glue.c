@@ -39,6 +39,12 @@
 #include "shared/weston-egl-ext.h"
 
 #include <assert.h>
+#include <dlfcn.h>
+
+static void* __REAL_eglGetProcAddress(const char* proc) {
+       return dlsym(RTLD_NEXT, proc);
+}
+#define eglGetProcAddress __REAL_eglGetProcAddress
 
 struct egl_config_print_info {
 	const EGLint *attrs;
@@ -754,3 +760,4 @@ gl_renderer_setup_egl_extensions(struct weston_compositor *ec)
 
 	return 0;
 }
+#undef eglGetProcAddress
