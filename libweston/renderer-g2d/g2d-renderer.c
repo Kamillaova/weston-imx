@@ -52,6 +52,7 @@
 #include "shared/helpers.h"
 #include "shared/platform.h"
 #include "pixel-formats.h"
+#include <dlfcn.h>
 
 #define BUFFER_DAMAGE_COUNT 3
 #define ALIGN_TO_16(a) (((a) + 15) & ~15)
@@ -63,6 +64,11 @@ static PFNEGLGETPLATFORMDISPLAYEXTPROC get_platform_display = NULL;
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLUPDATEWAYLANDBUFFERWL)(EGLDisplay dpy, struct wl_resource *buffer, EGLint attribute);
 #endif
 #endif
+
+static void* __REAL_eglGetProcAddress(const char* proc) {
+	return dlsym(RTLD_NEXT, proc);
+}
+#define eglGetProcAddress __REAL_eglGetProcAddress
 
 enum g2d_rotation_angle
 {
@@ -2107,3 +2113,5 @@ drm_create_g2d_image(struct g2d_surfaceEx* g2dSurface,
 	.output_destroy      = g2d_renderer_output_destroy,
 	.get_surface_fence_fd = g2d_renderer_get_surface_fence_fd,
 };
+
+#undef eglGetProcAddress
